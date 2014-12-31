@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1406833232 source:/home/acm25/Desktop/Training/Dia 04/Road Map/main.cpp
+	<iostream>
+	<sstream>
+	<vector>
+
