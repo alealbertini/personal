@@ -1,0 +1,642 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}   % tipografia
+\usepackage{graphicx}
+%\usepackage{makeidx}
+
+%\usepackage{float}
+%\usepackage{amsmath, amsthm, amssymb}
+%\usepackage{amsfonts}
+%\usepackage{sectsty}
+%\usepackage{charter}
+%\usepackage{wrapfig}
+
+%\usepackage{inconsolata}    COMENTE ESTA LINEA
+
+\usepackage{listings}
+\lstset{language=[ANSI]C}
+\lstset{basicstyle=\ttfamily\small}
+\lstset{frame=single,tabsize=4}
+\lstset{captionpos=b}
+\lstset{inputencoding=utf8}
+\renewcommand{\lstlistingname}{Código}
+
+
+\input{codesnippet}
+\input{page.layout}
+% \setcounter{secnumdepth}{2}
+\usepackage{underscore}
+\usepackage{caratula}
+\usepackage{url}
+
+
+% ******************************************************** %
+%              TEMPLATE DE INFORME ORGA2 v0.1              %
+% ******************************************************** %
+% ******************************************************** %
+%                                                          %
+% ALGUNOS PAQUETES REQUERIDOS (EN UBUNTU):                 %
+% ========================================
+%                                                          %
+% texlive-latex-base                                       %
+% texlive-latex-recommended                                %
+% texlive-fonts-recommended                                %
+% texlive-latex-extra?                                     %
+% texlive-lang-spanish (en ubuntu 13.10)                   %
+% ******************************************************** %
+
+
+
+\begin{document}
+
+
+\thispagestyle{empty}
+\materia{Organización del Computador II}
+\submateria{Segundo Cuatrimestre de 2014}
+\titulo{Trabajo Práctico III}
+\subtitulo{System Programming}
+\integrante{Alejandro Albertini}{924/12}{ale.dc@hotmail.com}
+\integrante{Tomas Shaurli}{671/10}{zeratulzero@hotmail.com}
+\integrante{Sebastian Aversa}{379/11}{sebastianaversa@gmail.com}
+ 
+\maketitle
+\newpage
+
+\thispagestyle{empty}
+\vfill
+%\begin{abstract}
+%En el presente trabajo se describe la problemática de ...
+%\end{abstract}
+
+\thispagestyle{empty}
+\vspace{3cm}
+\tableofcontents
+\newpage
+
+
+%\normalsize
+\newpage
+
+
+\section{Introducción}
+En este trabajo práctico implementamos un sistema operativo de 32 bits que corre en Modo Protegido. Este modo permite, entre otras mejoras respecto al Modo Real, realizar \textit{multitasking}--es decir, correr tareas concurrentemente, en instantes de tiempo que se solapan entre si, y dando la impresión al usuario de que se están ejecutando todas al mismo tiempo. Esto se realiza de una forma segura, controlado por un sistema de privilegios, y transparente. Además, este modo permite direccionar hasta 4GB de memoria e implementar memoria virtual, permitiendo a una aplicación correr en su propio espacio aislado de memoria y la posibilidad de utilizar una cantidad de memoria mayor a la que se dispone físicamente.
+
+
+\section{Niveles de privilegio}
+El Modo Protegido permite contar con hasta 4 niveles de privilegio numerados desde 0 hasta 3, siendo 0 el de mayor privilegio y 3 el de menor. (Figura \ref{PrivL}).
+
+En nuestro sistema empleamos sólo 2 de estos niveles: el nivel 0, al que también llamaremos \textit{modo supervisor} o \textit{modo kernel}, y nivel 3, también llamado \textit{modo tarea} o \textit{modo usuario}. El \textit{kernel} corre en nivel 0 y el resto de las tareas en nivel 3. La única excepción es la tarea \texttt{Idle}, que cuenta con nivel de privilegio 0.
+\begin{figure}
+  \begin{center}
+	\includegraphics[scale=1.0]{imagenes/ProtectionRings.png}
+	\caption{Niveles de Privilegio.}
+	\label{PrivL}
+  \end{center}
+\end{figure}
+
+
+\section{Memoria}
+\subsection{Segmentación} \label{secSeg}
+Una funcionalidad del modo protegido es la segmentación de la memoria. Esto permite particionar la memoria en segmentos de distintas características, logrando crear espacios de direcciones separados y aislados entre sí. Dichos segmentos se pueden definir en cualquier lugar de memoria física, y su tamaño puede ser variable. Además de un nivel de privilegio asignado, los mismos tienen asociado un tipo. Ese tipo puede determinar, por ejemplo, que un segmento se utilizará para código o para datos, o que será de sólo lectura, brindando protección al sistema. Con este sistema se obtiene un espacio de direccionamiento \textit{lineal}, donde cada dirección lineal de memoria consiste en un selector de segmento y un offset dentro de él (Sel:Offset).
+
+En todos los casos, para utilizar el Modo Protegido se debe definir al menos un segmento, ya que no es posible desactivar el mecanismo de segmentación. Para eso se deben crear tantas entradas como segmentos se quieran definir en un espacio reservado en memoria reservado \textbf{Global Descriptor Table (GDT)}. El comienzo de dicho espacio deberá estar alineado a 8 bytes en memoria y su dirección deberá estar cargada en el registro \textbf{Global Descriptor Table Register (GDTR)} para que el procesador pueda acceder a la información contenida en la tabla.
+
+Nuestro sistema cuenta con cuatro segmentos principales que cubren los primeros 623MB de memoria física. Dos de ellos son de código, uno definido como nivel 0 y otro como nivel 3, y otros dos de datos, también definidos para cada nivel de privilegio. Esta configuración es conocida como \textit{Modo Flat Protegido}. Los segmentos brindan protección, pero no hay una separación a nivel de espacio de direcciones; todos los segmentos se mapean a las mismas secciones de memoria física.
+
+Otro segmento con el que cuenta nuestro sistema cubre la porción de memoria de video correspondiente a la pantalla. El mismo está definido con nivel de privilegio 0.
+
+Las definiciones de los segmentos de nuestro sistema pueden verse en la Figura \ref{Segs}.
+
+Para acceder a cada uno de los segmentos, el procesador cuenta con registros de segmento. Los mismos son los registros \textbf{CS} (segmento de código); \textbf{DS} (segmento de datos); \textbf{SS} (segmento de pila); y \textbf{ES}, \textbf{FS} y \textbf{GS} (segmentos de propósito general) que almacenan el índice dentro de la \textbf{GDT} del segmento al que seleccionan.
+
+\begin{figure}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+	\hline
+  	Índice	&	Base 	&	Límite				&	Tipo	&	Privilegio 	\\ \hline
+  	9 		&	0x0		&	0x2DD00	&	Datos	&	0			\\ \hline
+  	10 		&	0x0		&	0x2DD00	&	Datos	&	3			\\ \hline
+  	11 		&	0x0		&	0x2DD00	&	Código	&	0			\\ \hline
+  	12 		&	0x0		&	0x2DD00 &	Código	&	3			\\ \hline
+  	13		&	0xB8000	&	0x2FA00		&	Datos	& 	0			\\ 
+  	\hline
+  	
+	\end{tabular}
+	\end{center}
+	\caption{Definiciones de los segmentos en la \texttt{GDT}.}
+	\label{Segs}
+\end{figure}
+
+
+\subsection{Paginación}
+Este mecanismo permite que una aplicación utilice todo el espacio lineal de direcciones sin que sea necesario contar con toda esa cantidad de memoria física. Además brinda protección adicional a la segmentación, aislando las tareas y permitiendo que sólo lean y escriban en posiciones de memoria que se encuentran mapeadas a su espacio privado de direcciones. Este modo se puede activar o desactivar a través del registro \textbf{CR0}.
+
+Nuestro sistema utiliza paginación, para lo cual define todas las estructuras necesarias (directorios y tablas de página). El kernel y cada tarea que corre en el sistema cuentan con su propio conjunto de directorio y tablas. Como consecuencia, cada uno posee su propio valor dentro del registro \textbf{CR3}, el cual apunta al Directorio de Tablas de Página (\textit{Page Directory Table}) que el procesador utilizará para traducir direcciones de memoria lineales a físicas.
+
+Para el kernel y las tareas, las direcciones desde 0x0 hasta 0xDC3FFF (que contienen todo el espacio del kernel, el área libre y \textit{el mapa}) se mapean con \textit{identity mapping}, es decir que las direcciones lineales en ese rango se mapean a la misma posición dentro de la memoria física. A diferencia del kernel, las tareas además tienen dos páginas de direcciones virtuales (con permisos de lectura/escritura y nivel de privilegio 3) mapeadas a direcciones físicas dentro de \textit{el mapa} y pueden modificar su espacio de memoria dinámicamente, adicionando direcciones virtuales (también mapeadas a posiciones dentro de \textit{el mapa}) a su espacio de direccionamiento. Para eso el sistema cuenta con mecanismos para modificar el directorio y tablas de una tarea dada y mapear direcciones virtuales a físicas. Entre ellos las funciones \texttt{void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char attrs)} y \texttt{void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3)}. El mapa de memoria puede verse en detalle en la Figura \ref{memMap}.
+
+
+La sección del kernel que administra la memoria se denomina \textbf{MMU (Memory Management Unit)} y su estructura cuenta con los siguientes componentes:
+
+\begin{itemize}
+\item{Las variables:}
+
+\begin{description}
+	\item[\texttt{mmu_entry* page_dir}] \hfill \\
+	Ahí empieza el directorio de paginas del kernel.
+	\item[\texttt{mmu_entry* page_libre}] \hfill \\
+	A partir de acá pido paginas libres cada vez que necesite.
+	
+
+\end{description}
+Todas se incrementan de a 4 KB o 0x1000.
+
+\item{Las funciones:}
+\begin{description}
+	\item[\texttt{mmu_inicializar()}] \hfill \\
+	Inicializa la unidad de administración de memoria del kernel.
+	
+	\item[\texttt{void mmu_inicializar_dir_kernel}] \hfill \\
+	Crean y completan el directorio y las tablas de página del kernel requeridas para realizar identity mapping para mapear los primeros 623 MB de memoria. 
+	
+	\item[\texttt{mmu_entry* mmu_inicializar_dir_zombie}] \hfill \\
+	Crean y completan el directorio y las tablas de página del kernel para un zombie.
+	
+	\item[\texttt{mmu_entry* area_libre_mmu}] \hfill \\
+	 Apunta a una nueva pagina libre del área de memoria libre.
+	
+	\item[\texttt{void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned char attrs)}]
+	Permite mapear una dirección virtual a una física dentro de un directorio dado con los atributos pasados por parámetro.
+	
+	\item[\texttt{void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3)}] \hfill \\
+	Realiza el proceso inverso.	
+	
+	\item[\texttt{void copiar_pagina_4k(unsigned int* dst, unsigned int* src)}] \hfill \\
+	Copia todo el contenido de una pagina de 4KB.		
+
+	\item[\texttt{int primer_pos_libre(int* tareas)}] \hfill \\
+	Devuelve la primer posicion libre del vector.	
+	
+\end{description}
+\end{itemize}
+
+\section{Modo Protegido}
+Como dijimos anteriormente, el modo protegido presenta mejoras significativas con respecto al modo real. Sin embargo, por una cuestión de compatibilidad hacia atrás, los procesadores de la arquitectura IA-32 arrancan en modo real. El cambio de modo se debe realizar manualmente y no puede hacerse hasta no tener definida una mínima estructura (una GDT con al menos un segmento, como vimos en la sección \ref{secSeg}).
+
+El Código \ref{kernelInic} muestra las instrucciones que ejecuta nuestro kernel desde que inicia hasta que pasa a modo protegido.
+
+
+\begin{lstlisting}[caption={Pasaje a modo protegido -- \textbf{kernel.asm}}, label=kernelInic, language={[x86masm]Assembler}]
+BITS 16
+start:
+    ; Deshabilitar interrupciones
+    cli
+
+    ; Cambiar modo de video a 80 X 50
+    mov ax, 0003h
+    int 10h ; set mode 03h
+    xor bx, bx
+    mov ax, 1112h
+    int 10h ; load 8x8 font
+
+    ; Imprimir mensaje de bienvenida
+    imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
+ 
+    ; Habilitar A20
+	call habilitar_A20
+
+    ; Cargar la GDT
+	lgdt [GDT_DESC]
+
+    ; Setear el bit PE del registro CR0
+    mov EAX, CR0
+    or EAX, 1
+    mov CR0, EAX
+
+    ; Saltar a modo protegido
+	jmp 0x40:modo_protegido
+	bits 32
+	modo_protegido:		
+	; Estamos en modo protegido.	
+\end{lstlisting}
+
+Se puede observar como, además de cambiar el modo de video y de imprimir un mensaje de bienvenida, se llama a la rutina \texttt{habilitar_A20}. La compuerta A20 es un rezago histórico que se implementó improvisadamente para mantener compatibilidad con sistemas viejos y que sigue existiendo hasta el día de hoy. Es una compuerta lógica que habilita o deshabilita la línea 20 del bus de direcciones del procesador (A20). Como en modo protegido interesa direccionar más memoria que el límite de modo real de 1 MB, el primer paso antes de poder hacer el salto entre modos es habilitar dicha compuerta.
+
+El siguiente paso es cargar el registro \texttt{GDTR} con los datos necesarios para que el procesador encuentre nuestra \textbf{GDT}. Ese dato no es sólo la dirección, sino también el tamaño de dicha tabla. Ese par de datos se denomina \textit{descriptor} y su estructura puede verse en el Código \ref{gdtDesc}. Para cargar dicho registro se utiliza la función específica \texttt{lgdt} (Load GDTR Register).
+
+Luego se activa el bit 0 (\textbf{PE}: Protection Enable) del registro \textbf{CR0} (Figura \ref{cr0}). Una vez hecho esto es muy importante ejecutar el salto que se encuentra en la línea de abajo y no otra instrucción: En ese punto el procesador ya activó el modo protegido y tiene cargados los datos de la \textbf{GDT}. Sin embargo, el contenido del registro \textbf{CS} al arranque (el cual selecciona el segmento de código desde donde se leen las instrucciones a ejecutar) es 0. Por diseño, es ilegal definir un segmento en el índice 0 de la \textbf{GDT} y que los registros de segmento \textbf{CS}, \textbf{DS} o \textbf{SS} apunten al índice nulo. Además, no existe ninguna instrucción que permita modificar el registro \textbf{CS}. Ese tipo de salto (denominado \textit{far jump}) es la única manera de modificar el registro \textbf{CS}, en este caso seleccionando el segmento de código perteneciente al kernel. La única forma de hacer el pasaje de modo es si ese salto se realiza justo después de setear el bit \textbf{PE}, mientras el \textbf{Instruction Pointer (EIP)} apunta a la posición de memoria donde se encuentra la instrucción. Cualquier otra instrucción resultaría en una excepción de \textit{protección general} (\#GP).
+
+\begin{lstlisting}[caption={Descriptor de GDT -- \textbf{gdt.\{c,h\}}}, label=gdtDesc]
+typedef struct str_gdt_descriptor {
+    unsigned short  gdt_length;
+    unsigned int    gdt_addr;
+} __attribute__((__packed__)) gdt_descriptor;
+
+gdt_descriptor GDT_DESC = {
+    sizeof(gdt) - 1,
+    (unsigned int) &gdt
+};
+\end{lstlisting}
+
+\begin{figure}
+  \begin{center}
+	\includegraphics[scale=1.0]{imagenes/CR0.png}
+	\caption{\textbf{Control Register 0} (El bit 0 activa el modo protegido).}
+	\label{cr0}
+  \end{center}
+\end{figure}
+
+%\clearpage
+\section{Interrupciones}
+Nuestro sistema soporta 2 interrupciones por hardware: las producidas por el timer y las generadas por el teclado. Además cuenta con rutinas de atención a 18 \textit{excepciones} (interrupciones generadas por el procesador cuando encuentra un error en la ejecución de una instrucción) y una \textit{syscall}, numerada 0x66, que implementa funcionalidades del juego y a la que las tareas pueden llamar.
+
+\subsection{Estructuras}
+La arquitectura IA-32 cuenta con una estructura que facilita la administración de la atención a las interrupciones. Similar a la \textbf{GDT}, la \textbf{Interrupt Descriptor Table (IDT)} cuenta con entradas secuenciales de descriptores, generando un vector donde cada índice dentro de dicha tabla corresponde a una interrupción. Se pueden definir hasta 255 interrupciones distintas y aquellas entradas que no se deseen utilizar pueden quedar nulas. Al igual que con la \textbf{GDT}, hay un registro específico que apunta al comienzo de la tabla: el registro \textbf{IDTR}. En nuestro sistema la IDT es la misma tanto para el kernel como para las tareas.
+
+Para cargar el registro \textbf{IDTR} se cuenta con la instrucción \textit{lidt} que toma como parámetro un \textit{descriptor} de IDT. (Figura \ref{idtDesc})
+
+\begin{lstlisting}[caption={Descriptor de IDT -- \textbf{idt.\{c,h\}}}, label=idtDesc]
+typedef struct str_idt_descriptor {
+    unsigned short  idt_length;
+    unsigned int    idt_addr;
+} __attribute__((__packed__)) idt_descriptor;
+
+idt_descriptor IDT_DESC = {
+    sizeof(idt) - 1,
+    (unsigned int) &idt
+};
+\end{lstlisting}
+
+Cada entrada en la \textbf{IDT} permite asignar un nivel de privilegio a cada rutina de atención a esa interrupción. Todas nuestras rutinas están definidas con nivel de privilegio 0, excepto por la rutina de atención a la syscall 0x66 que cuenta con nivel de privilegio 3, ya que debe poder ser ejecutada por las tareas sin cambiar de privilegio.
+
+La arquitectura permite utilizar distintos tipos de descriptores en la \textbf{IDT}. Nuestro sistema utiliza \textit{interrupt-gate descriptors}, los cuales permiten llamar directamente al código en Assembler que atiende a la interrupción.
+
+\begin{center}
+\begin{table}
+\caption{Entradas en la \textbf{IDT}}
+\begin{center}
+\begin{tabular}{|r|l|}
+\hline
+Vector Nro.	& Descripción	\\ \hline
+0	&	\#DE: Divide Error	\\ \hline			
+1	&	\#DB: Reserved \\ \hline
+2	&	NMI: Nonmaskable External Interrupt \\ \hline
+3	&	\#BP: Breakpoint \\ \hline
+4	&	\#OF: Overflow  \\ \hline
+5	&	\#BR: BOUND Range Exceeded \\ \hline
+6	&	\#UD: Invalid (Undefined) Opcode  \\ \hline
+7	&	\#NM: Device Not Available  \\ \hline
+8	&	\#DF: Double Fault \\ \hline
+10	&	\#TS: Invalid TSS \\ \hline
+11	&	\#NP: Segment Not Present \\ \hline
+12	&	\#SS: Stack-Segment Fault \\ \hline
+13	&	\#GP: General Protection \\ \hline
+14	&	\#PF: Page Fault \\ \hline
+16	&	\#MF: x87 FPU Floating-Point Error \\ \hline
+17	&	\#AC: Alignment Check \\ \hline
+18	&	\#MC: Machine Check \\ \hline
+19	&	\#XM: SIMD Floating-Point Exception \\ \hline
+32	&	Reloj	\\ \hline
+33 	& 	Teclado \\ \hline
+82	&	Syscall 0x52 (DPL: 3)  \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+\end{center}
+
+Una vez cargada la IDT (\texttt{lidt [IDT_DESC]} en el archivo \textbf{kernel.asm}), y luego de haber inicializado el sistema en su totalidad, se activan las interrupciones mediante la instrucción \texttt{sti}, que setea el bit 9 (\textbf{IF}) del registro \textbf{EFLAGS}.
+
+\subsection{Excepciones}
+Como las tareas pueden tener cualquier tipo de comportamiento, el sistema posee un mecanismo que permite resolver cualquier problema que las mismas generen. La acción que realiza dicho mecanismo es simple: desaloja a la tarea infractora y deja el sistema listo para seguir ejecutando las demás. Esa política es independiente de la causa que haya generado los inconvenientes, por lo que el código que se utiliza para atender las excepciones es idéntico en cada una. 
+
+
+El caso donde la tarea \texttt{Idle} produce una excepción es un evento fatal en nuestro sistema y por lo tanto no podemos continuar operando.
+
+
+\subsection{PIC}
+El \textbf{Controlador Programable de Interrupciones (PIC)} es un controlador que permite administrar señales que provienen desde dispositivos de hardware que desean capturar la atención del procesador. Para eso utiliza un sistema de prioridades y permite disponer de una menor cantidad de líneas de las que serían necesarias si todos los dispositivos se conectaran directamente con el procesador. Al ser programable, permite mapear eventos externos a distintas interrupciones e incluso pueden conectarse varios controladores en cascada para aumentar la cantidad de señales que un procesador puede recibir.
+
+El PIC permite recibir 15 señales. Las mismas se encuentran mapeadas por defecto a interrupciones que ya están designadas por el procesador como excepciones. Por esa razón, antes de poder habilitar las interrupciones, es necesario remapear dichas señales a indices del vector de interrupciones que estén disponibles. Para hacer esto, utilizamos las funciones \texttt{deshabilitar_pic}, \texttt{resetear_pic} y \texttt{habilitar_pic} que nos fueron provistas por la cátedra, y que mapean la interrupción del \textbf{timer} al índice \textbf{0x32} y la del \textbf{teclado} al \textbf{0x33}.
+
+El PIC cuenta con un registro llamado \textbf{ISR (In-Service Register)} que permite determinar si una interrupción particular está siendo atendida. En el modo de operación en el que utilizamos el PIC en este TP es necesario avisarle al controlador que ya atendimos a dicha interrupción. Para eso utilizamos la función \texttt{fin_intr_pic1} provista por la cátedra, cuyo uso puede observarse en las dos rutinas detalladas más abajo.
+
+\subsection{Teclado}
+El sistema soporta la entrada desde el teclado. Las teclas soportadas son las \textbf{W y S} para mover al jugador A, \textbf{I y K} para mover al jugador B, \textbf{A y D} para cambiar al zombie del jugador A, \textbf{J y L} para cambiar al zombie del jugador B, \textbf{Lshift} para lanzar un zombie del jugador A y \textbf{Rshift} para lanzar un zombie del jugador B.
+ 
+\begin{lstlisting}[caption={Rutina de atención a la interrupción del teclado. -- \textbf{isr.asm}}, label=intTec, numbers=left, language={[x86masm]Assembler}]
+_isr33:
+    pushad
+    cli 
+    xor eax, eax
+    in al, 0x60
+    mov edi, eax
+
+    cmp edi, 0x15
+    jne .noEsDebugger
+
+    cmp byte [debug_activado], 1
+    je .restablecer_pantalla
+
+    xor eax, eax
+    mov al, byte[modo_debug]
+    xor al, 0x1
+    mov byte[modo_debug], al
+    
+    jmp .fin
+
+.restablecer_pantalla:
+    mov dword [entro_excepcion], 0
+    mov dword [debug_activado], 0
+    call restablecer_pantalla
+    jmp .fin
+
+.noEsDebugger:
+	cmp byte [debug_activado], 1
+	je .fin
+	
+    push edi
+    call print_keyboar_int
+    pop edi
+
+    push edi
+    call setear_tipo_zombie
+    pop edi
+    
+    push edi
+    ;xchg bx, bx
+    call crear_zombie
+    pop edi
+    
+    push edi
+    call mover_jugador
+    pop edi
+
+.fin:
+    push dword[modo_debug]
+    call print_debug_mode
+    add esp, 4
+
+    call fin_intr_pic1
+    popad
+    iret
+\end{lstlisting}
+
+
+\subsection{Timer}
+El timer gobierna el cambio en la ejecución de las tareas. Cada interrupción del timer le indica al sistema que debe dejar de ejecutar la tarea actual para pasar a ejecutar la siguiente. Se genera una interrupción cada vez que se alcanza una cantidad determinada de ciclos de reloj. 
+
+\begin{lstlisting}[caption={Rutina de atención a la interrupción del timer. -- \textbf{isr.asm}}, label=intTim, language={[x86masm]Assembler}]
+_isr32:
+    pushad    
+    cli
+    cmp byte [debug_activado], 1
+    je .nojump
+    
+    call proximo_reloj    
+    call sched_proximo_indice ; ME DEVUELVE EN EAX EL SELECTOR DE LA GDT DE LA TAREA A SALTAR
+    cmp ax, 8
+    je .nojump
+
+    mov [selector], ax
+    call fin_intr_pic1
+    jmp far [offset]
+    jmp .end
+    .nojump:
+    call fin_intr_pic1
+    
+    .end:
+    popad
+    iret
+\end{lstlisting}
+
+
+
+\clearpage
+\section{Tareas}
+Las dieciséis tareas que corren en el sistema lo hacen concurrentemente. Cada una posee un tiempo fijo (denominado \textbf{quantum}) dentro del cual pueden ejecutar su propio código. Una vez que ese tiempo se termina se pasa a ejecutar otra tarea durante un quantum, se avanza a la siguiente y así sucesivamente. Como se detalla en la sección anterior, un quantum de nuestro sistema equivale a un \textit{tick} de reloj.
+
+Para que ese proceso sea transparente a las tareas se debe de alguna forma preservar el contexto de las mismas. Esto es, suponiendo que una tarea se está ejecutando y tiene almacenado un valor en el registro \texttt{EAX} que espera utilizar más adelante, cuando su quantum finalice y su ejecución sea interrumpida, dicho valor debe ser almacenado en algún lado. De esa forma, cuando se desee continuar con la ejecución de la primera tarea durante otro quantum, la misma podrá seguir ejecutando sus instrucciones como si nada hubiera pasado en el medio y la misma tuviera el procesador a su disposición.
+
+Para asistir con el proceso de guardar y restablecer contextos, la arquitectura cuenta con un mecanismo basado en \textbf{Task-State Segments (TSS)}, el cual utilizamos en nuestro sistema. Los \textbf{TSS} son porciones de memoria que se definen como índices en la \textbf{GDT}. Cada tarea tiene un registro, el \textbf{Task Register (TR)}, que selecciona un \textbf{TSS}. Cuando se realiza un cambio de tarea, el procesador automáticamente guarda el contexto de la tarea actual dentro del \textbf{TSS} seleccionado con el registro \textbf{TR} de esa tarea y selecciona un nuevo \textbf{TSS} para la nueva tarea, donde se almacenará su contexto al realizar un nuevo salto a otra tarea.
+
+
+
+\subsection{Task State Segments (TSS)}
+Hay dieciséis segmentos \textbf{TSS} definidos en la \textbf{GDT} de nuestro sistema y además \texttt{GDT_IDX_TSS_INICIAL}. (Esta última se utiliza sólo una vez: al inicio del sistema, cuando se realiza el salto a la primera tarea, la \texttt{Idle}.) 
+Después se comienza ejecutando la tarea 0 del jugador A, luego se ejecuta la tarea 0 del jugador B y asi sucesivamente hasta llegar a la tarea 7 del jugador B. Después de ejecutar dicha tarea se pasa a ejecutar de nuevo la tarea 0 del jugador A y asi por el hasta que no queden tareas pendientes.
+
+Dicho mecanismo es implementado por el \textbf{Scheduler}.  (Archivos \textbf{sched.c} y \textbf{sched.h}).
+
+
+\subsection{Contexto Inicial Tareas}
+Las tareas comienzan con el siguiente contexto:
+\begin{itemize}
+	\item  El \textbf{EIP} comienza en la primera dirección 0x16000.
+	\item \textbf{ESP} = \textbf{EBP} = 0x27000.
+	\item \textbf{CS} apuntando al segmento de código nivel 0.
+	\item El resto de los selectores de segmento seleccionando el segmento de datos nivel 3.
+	\item \textbf{CR3} = 0x27000
+	\item \textbf{EFLAGS} = 0x202 (Interrupciones habilitadas.)
+\end{itemize}
+
+
+\subsection{Scheduler}
+El scheduler cuenta con las siguientes variables que definen el estado actual del sistema:
+
+\begin{description}
+	\item[\texttt{int jugador_actual = 0;}] Indica que jugador empieza ejecutando. Nosotros por azar elegimos empezar con el jugador A.
+	\item[\texttt{int tarea_actualA}] Indica qué tarea se está ejecutando actualmente del jugador A.
+	\item[\texttt{int tarea_actualB}] Indica qué tarea se está ejecutando actualmente del jugador B.
+\end{description}	
+Todas toman valores entre 0 y 7
+\begin{description}
+	\item[\texttt{int posicion_zombie_A_C[CANT_ZOMBIS]}] La posicion de memoria en columnas de la tarea actual del A.
+	\item[\texttt{int posicion_zombie_A_F[CANT_ZOMBIS]}] La posicion de memoria en filas de la tarea actual del A.
+	\item[\texttt{int posicion_zombie_B_C[CANT_ZOMBIS]}] La posicion de memoria en columnas de la tarea actual del B.
+	\item[\texttt{int posicion_zombie_B_F[CANT_ZOMBIS]}] La posicion de memoria de en filas la tarea actual del B.
+	\item[\texttt{int clase_zombie_A[CANT_ZOMBIS]}] La clase de cada zombie del jugador A.
+	\item[\texttt{int clase_zombie_B[CANT_ZOMBIS]}] La clase de cada zombie del jugador B.
+	\item[\texttt{int posicion_jugador_A}] La posicion en el eje Y del jugador A en el mapa.
+	\item[\texttt{int posicion_jugador_B}] La posicion en el eje Y del jugador B en el mapa.
+	\item[\texttt{unsigned int cr3_A[CANT_ZOMBIS]}] Los cr3 de cada zombie del jugador A.
+	\item[\texttt{unsigned int cr3_B[CANT_ZOMBIS]}] Los cr3 de cada zombie del jugador B.
+\end{description}
+
+
+\begin{lstlisting}[caption={Código del scheduler que determina qué tarea se debe ejecutar a continuación y prepara el entorno para ello. Si hubo un syscall fuerza el cambio a la tarea \texttt{Idle}. Además de la función que inicializa el mismo y la interfaz que exporta el scheduler para realizar el cambio de tareas. -- \textbf{sched.c}}, label=sched]
+// Inicializa la estructura del Scheduler. 
+int jugador_actual = 0;
+int tarea_actualA = 0;						
+int tarea_actualB = 0;						
+int posicion_zombie_A_C[CANT_ZOMBIS];		
+int posicion_zombie_B_C[CANT_ZOMBIS];		
+int posicion_zombie_A_F[CANT_ZOMBIS];		
+int posicion_zombie_B_F[CANT_ZOMBIS];		
+int clase_zombie_A[CANT_ZOMBIS];				
+int clase_zombie_B[CANT_ZOMBIS];				
+int posicion_jugador_A = 1;					
+int posicion_jugador_B = 1;						
+int tipo_zombie_A = 0;
+int tipo_zombie_B = 0;
+unsigned int cr3_A[CANT_ZOMBIS];
+unsigned int cr3_B[CANT_ZOMBIS];
+unsigned int puntos_jugador_A = 0;
+unsigned int puntos_jugador_B = 0;
+unsigned int zombies_restantes_A = 20;
+unsigned int zombies_restantes_B = 20;
+
+
+
+unsigned short sched_proximo_indice()
+{
+	int i;
+	if (jugador_actual == 1) //jugador A
+	{
+		jugador_actual = 0;
+		for (i = 0; i < 8; ++i)
+		{
+			int pos = (i + tarea_actualA) % 8;
+			if (tareas_A[pos] == 1)
+			{			
+					tarea_actualA = pos;
+					return (pos + 15)*8;
+			}
+		}
+		
+	}
+	else
+	{
+		jugador_actual = 1;
+		for (i = 0; i < 8; ++i)
+		{
+			int pos = (i + tarea_actualB) % 8;
+			if (tareas_B[pos] == 1)
+			{				
+					tarea_actualB = pos;
+					return (pos + 23)*8;
+			}
+		}
+	}
+
+	return 8;
+}
+\end{lstlisting}
+%\end{figure}
+
+\clearpage
+
+\clearpage
+
+\section{kernel.asm}
+\begin{lstlisting}[caption={Código del kernel luego de pasar a Modo Protegido. -- \textbf{kernel.asm}}, label=kernelMP, language={[x86masm]Assembler}]
+	;; Punto de entrada del kernel.
+BITS 16
+start:
+    ; Deshabilitar interrupciones
+    cli
+
+    ; Cambiar modo de video a 80 X 50
+    mov ax, 0003h
+    int 10h ; set mode 03h
+    xor bx, bx
+    mov ax, 1112h
+    int 10h ; load 8x8 font
+
+    ; Imprimir mensaje de bienvenida
+    imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
+ 
+    ; Habilitar A20
+	call habilitar_A20
+
+    ; Cargar la GDT
+	lgdt [GDT_DESC]
+
+    ; Setear el bit PE del registro CR0
+    mov EAX, CR0
+    or EAX, 1
+    mov CR0, EAX
+
+    ; Saltar a modo protegido
+	jmp 0x40:modo_protegido
+	bits 32
+	modo_protegido:
+	
+    ; Establecer selectores de segmentos
+	xor eax, eax
+	mov ax, 1010000b
+	mov ds, ax
+	mov es, ax
+	mov gs, ax
+	mov ss, ax
+    mov ax, 1100000b
+ 	mov fs, ax
+
+	; Establecer la base de la pila
+    mov esp, 0x27000
+    mov ebp, 0x27000
+
+    ; Imprimir mensaje de bienvenida
+	
+    ; Inicializar pantalla
+    
+    call pintarTablero
+       
+    ; Manejo de interrupciones
+    LIDT [IDT_DESC]
+	
+    ; Inicializar el manejador de memoria
+ 
+    ; Inicializar el directorio de paginas
+    call mmu_inicializar
+    
+    ; Cargar directorio de paginas
+    mov eax, [page_dir]
+    mov cr3, eax
+
+    ; Habilitar paginacion
+    mov EAX, CR0
+    or EAX, 0x80000000
+    mov CR0, EAX    
+    
+    ; Inicializar tss
+    call tss_inicializar
+
+    ; Inicializar tss de la tarea Idle
+
+    ; Inicializar el scheduler
+
+    ; Inicializar la IDT
+    CALL idt_inicializar    
+    
+    call deshabilitar_pic
+    call resetear_pic
+    call habilitar_pic
+    sti
+
+    ; Cargar IDT
+
+    ; Configurar controlador de interrupciones
+
+    ; Cargar tarea inicial
+    mov ax, (0xD*8)
+    ltr ax
+
+    ; Habilitar interrupciones
+
+    ; Saltar a la primera tarea: Idle
+	mov ax, (0xE*8)
+    jmp (0xE*8):0
+\end{lstlisting}
+
+\section{Modo debugger}
+
+Este modo sirve para saber el estado de los registros en el momento en el que se produce una excepción. El modo debug se activa presionando la tecla "y" y se desactiva de la misma manera. Si el modo debug está activado aparecerá un cartel con el estado de los registros en el momento en el que haya una excepción (no antes) y se pausa el juego hasta que el usuario presione nuevamente la tecla "y". Si el modo debug no está activado y se produce una excepción no se debe mostrar el cartel, se desaloja la tarea que produjo la excepción y se continua con la ejecución del programa.
+El procedimiento cuando se ejecuta el modo debugger es el siguiente:
+1) Guardar pantalla: se guarda una captura de la pantalla para que después cuando se restablezca el juego se vuelva a iniciar desde el último momento jugado.
+2) Pintar debugger: Se pushean los registros necesarios y se pinta el cartel con el estado de los registros antes de que se produzca la excepción. 
+3) Restablecer Pantalla: Se restablece la pantalla con la última captura hecha. Se debe guardar la pantalla por mas que este o no el modo debug activado, ya que si no está el modo debug activado, no se podria saber cual fue la última captura de pantalla antes de que se produjera la excepción.
+
+\end{document}
+

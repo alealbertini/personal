@@ -1,0 +1,836 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"min",
+				"minNoUsado"
+			],
+			[
+				"re",
+				"result"
+			],
+			[
+				"s",
+				"sol"
+			],
+			[
+				"e",
+				"equipos"
+			],
+			[
+				"gra",
+				"grafo"
+			],
+			[
+				"no",
+				"nodos"
+			],
+			[
+				"ad",
+				"ady"
+			],
+			[
+				"ca",
+				"cantNodos"
+			],
+			[
+				"col",
+				"colores0"
+			],
+			[
+				"se",
+				"seisSieteUno"
+			],
+			[
+				"nu",
+				"nueveCinco"
+			],
+			[
+				"F",
+				"for1"
+			],
+			[
+				"nodo",
+				"nodo_crear"
+			],
+			[
+				"OF",
+				"OFFSET_DATOS"
+			],
+			[
+				"inser",
+				"insertar_ultimo"
+			],
+			[
+				"ins",
+				"insertar_al_final"
+			],
+			[
+				"me",
+				"menor_jugador"
+			],
+			[
+				"in",
+				"insertar_ordenado"
+			],
+			[
+				"OFF",
+				"OFFSET_PRIMERO"
+			],
+			[
+				"off",
+				"OFFSET_ANT"
+			],
+			[
+				"offset",
+				"OFFSET_DATOS"
+			],
+			[
+				"IM",
+				"imprimir_jugador"
+			],
+			[
+				"OFFSET_A",
+				"OFFSET_ALTURA_S"
+			],
+			[
+				"OFFS",
+				"OFFSET_DATOS"
+			],
+			[
+				"lis",
+				"lista_imprimir_f"
+			],
+			[
+				"NOM",
+				"nombre_archivo"
+			],
+			[
+				"LI",
+				"lista_borrar"
+			],
+			[
+				"CRE",
+				"crear_jugador"
+			],
+			[
+				"of",
+				"OFFSET_JUGADORES_S"
+			],
+			[
+				"string",
+				"string_copiar"
+			],
+			[
+				"MAL",
+				"malloc"
+			],
+			[
+				"cha",
+				"charPointer_size"
+			],
+			[
+				"NO",
+				"nombre_size"
+			],
+			[
+				"LO",
+				"loop"
+			],
+			[
+				"OFFSET_P",
+				"OFFSET_PAIS_S"
+			],
+			[
+				"alt",
+				"alturaPromedio"
+			],
+			[
+				"si",
+				"SELECCION_SIZE"
+			],
+			[
+				"al",
+				"alturaPromedio"
+			],
+			[
+				"ma",
+				"malloc"
+			],
+			[
+				"nom",
+				"nombre_size"
+			],
+			[
+				"OFFSET_n",
+				"OFFSET_NUMERO_J"
+			],
+			[
+				"OFFSET_p",
+				"OFFSET_PAIS_J"
+			],
+			[
+				"OFFSET_a",
+				"OFFSET_ALTURA_J"
+			],
+			[
+				"c",
+				"crear_jugador"
+			],
+			[
+				"TR",
+				"true"
+			],
+			[
+				"menor",
+				"menor_altura"
+			],
+			[
+				"li",
+				"lista_imprimir_f"
+			],
+			[
+				"offset_l",
+				"offset_list_prim"
+			],
+			[
+				"ti",
+				"tipo_funcion_borrar"
+			],
+			[
+				"escal",
+				"escalaText"
+			],
+			[
+				"str",
+				"string"
+			],
+			[
+				"clo",
+				"clocks_start"
+			],
+			[
+				"clock",
+				"clock_acum"
+			],
+			[
+				"es",
+				"escalones"
+			],
+			[
+				"vec",
+				"vectortmp"
+			],
+			[
+				"for",
+				"for	For Loop"
+			],
+			[
+				"inc",
+				"include"
+			],
+			[
+				"ab",
+				"abiertoAux"
+			],
+			[
+				"abi",
+				"abiertos"
+			],
+			[
+				"pu",
+				"push_back"
+			],
+			[
+				"x",
+				"xActual"
+			],
+			[
+				"y",
+				"yActual"
+			],
+			[
+				"abierto",
+				"abiertoMasAlto"
+			],
+			[
+				"res",
+				"resultado"
+			],
+			[
+				"ts",
+				"tss_idle"
+			],
+			[
+				"fre",
+				"free_tss_gdt_index"
+			],
+			[
+				"con",
+				"contexto_tarea_previa_en_gdt"
+			],
+			[
+				"TA",
+				"TAREA_ACTUAL"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"tss",
+				"tss_copy"
+			],
+			[
+				"TAREA",
+				"TAREA_ACTUAL"
+			],
+			[
+				"TAREA_",
+				"TAREA_ANTERIOR"
+			],
+			[
+				"TAR",
+				"TAREA_ACTUAL"
+			],
+			[
+				"ta",
+				"TAREA_ACTUAL"
+			],
+			[
+				"b",
+				"base_31_24"
+			],
+			[
+				"tss_ne",
+				"tss_next1"
+			],
+			[
+				"sel",
+				"sel_tarea"
+			],
+			[
+				"AR",
+				"array_tareas"
+			],
+			[
+				"context",
+				"contexto_tarea_previa"
+			],
+			[
+				"arr",
+				"array_tareas"
+			],
+			[
+				"ar",
+				"array_tareas"
+			],
+			[
+				"t",
+				"tss_busy"
+			],
+			[
+				"GD",
+				"GDT_IDX_TSS_INICIAL"
+			],
+			[
+				"tss_iNI",
+				"tss_inicial"
+			],
+			[
+				"limit_",
+				"limit_16_19"
+			],
+			[
+				"tss_next",
+				"tss_next_1"
+			],
+			[
+				"c_fg_",
+				"C_FG_RED"
+			],
+			[
+				"fin",
+				"fin_intr_pic1"
+			],
+			[
+				"mem",
+				"mem_libre"
+			],
+			[
+				"0x",
+				"0x3ffff0"
+			],
+			[
+				"mm",
+				"mmu_inicializar_dir_tarea"
+			],
+			[
+				"g",
+				"GDT_DESC"
+			],
+			[
+				"MOVD",
+				"MOVDQU"
+			],
+			[
+				"XOR",
+				"XORPD"
+			],
+			[
+				"CVT",
+				"CVTDQ2PS"
+			],
+			[
+				"X",
+				"XMM10"
+			],
+			[
+				"finFi",
+				"finFila"
+			],
+			[
+				"MOV",
+				"MOVDQU"
+			],
+			[
+				"Jb",
+				"JBE"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/C++/C++.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"add",
+				"Package Control: Add Repository"
+			],
+			[
+				"packa",
+				"Package Control: Add Repository"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/seba/FCEN/algo3/Algo3TPs/tp2/ej3/in",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp2/ej3/ej3.cpp",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/tp2.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/bandas_c_exp1.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/bandas_c.c",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/src/ej2.cpp",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/sierpinski_asm.asm",
+		"/home/seba/Desktop/mov y lea",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/mblur_asm.asm",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/bandas_asm.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/primer cuatri documentos/primer cuatri solucion/src/temperature_asm.asm",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/mblur.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/bandas.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/cropflip.c",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/src/ejercicio1_tiempos.cpp",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/primer cuatri documentos/primer cuatri solucion/src/tp2.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/cropflip_asm.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/lista_asm2.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/lista_asm.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/main.c",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp2/ej3/grafo.h",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp2/ej3/grafo.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp2/ej3/prims.cpp",
+		"/home/seba/Desktop/truquitos para el parcial",
+		"/home/seba/FCEN/algo3/LCS.cpp",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/lista_c.c",
+		"/media/Backup/found.002/4e27c5d6d713c1919f3683d3b34c1133aa0a1782.file",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/src/ejercicio1.cpp",
+		"/home/seba/FCEN/algo3/labo/CLS.cpp",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/sierpinski_c.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/mblur_c.c",
+		"/home/seba/FCEN/Orga II/tps/tp2/solucion/src/cropflip_c.c",
+		"/home/seba/FCEN/1er cuatri Orga II/repos/seba/orga2/tps/tp2/solucion/src/temperature_c.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/sierpinski_c.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/mblur_c.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/cropflip_c.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/bandas_c.c",
+		"/tmp/.fr-Dnr7oM/tp2-bundle-v1/solucion/src/mblur.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/lista.h",
+		"/tmp/.fr-yIfsmq/tp2-bundle-v1/solucion/src/Makefile",
+		"/home/seba/Downloads/main.c",
+		"/tmp/.fr-gcC5YO/src/Makefile",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/Makefile",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/src/instancias_generadas.txt",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/src/ej2_instanciador.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/src/instancias_generadas.txt",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/src/ej2_tiempos.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/src/ej2_ops.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/graficos/multiChartTime.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/graficos/chartTime.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/graficos/multiChartOps.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/src/sample.txt",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/graficos/chartOps.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/src/ejercicio1_operaciones.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/graficos/chartOps.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej3/ejercicio3.cpp",
+		"/home/seba/Downloads/ejercicio3.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/graficos/chartTime.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/graficos/multiChartTime.plot",
+		"/home/seba/Downloads/ejercicio3 (1).cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/src/ej1_instanciador.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/graficos/ej1_chartTime.png",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/src/vertex.h",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/VersionNico/ej2_tiempos.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/ej2_instanciador.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/VersionNico/ej2.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/aleatorias.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/ejercicio2_erika.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/VersionNico/ej2_ops.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/ej1_instanciador.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/test",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/ejercicio1.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/sample.txt",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/ejercicio1_tiempos.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/chartTime.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/chartOps.plot",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/ejercicio1_operaciones.cpp",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej1/instancias_generadas.txt",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/FileHandler.h",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/lala",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/VersionNico/sample.txt",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/horizontes_lejanos.h",
+		"/home/seba/FCEN/algo3/Algo3TPs/tp1/ej2/horizontes_lejanos.cpp",
+		"/tmp/evince-5092/image.2ESZKX.png",
+		"/home/seba/Desktop/game passwords",
+		"/media/Backup/Descargas/Torrent/300 rise of an empire/300.Rise.of.an.Empire.2014.BluRay.1080p.DTS.x264-CHD [dydao.com]/300.Rise.of.an.Empire.2014.BluRay.1080p.DTS.x264-CHD.srt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/isr.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/sched.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/sched.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/idt.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/tss.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/tss.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/defines.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/kernel.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/gdt.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/gdt.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/mmu.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/mmu.c",
+		"/home/seba/.cache/.fr-5rljeS/Age.of.Tomorrow.2014.1080p-720p.BluRay.x264.YIFY.Eng.srt",
+		"/media/Backup/Descargas/Torrent/age of tomorrow/Edge of Tomorrow (2014) 1080p Web-DL NL Subs SAM TBS/Movie/Edge of Tomorrow (2014).srt",
+		"/media/Backup/Descargas/Torrent/age of tomorrow/Edge of Tomorrow (2014) 1080p Web-DL NL Subs SAM TBS/Movie/Edge of Tomorrow (2014) 1080p Web-DL NL Subs SAM TBS.srt",
+		"/media/Backup/Descargas/Torrent/purusit of hapiness1/The.Pursuit.Of.Happyness.2006.720p.BluRay.x264-REVEiLLE/the.pursuit.of.happyness.2006.720p.bluray.x264-reveille.srt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/game.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/documentos/informe.tex",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/idle.asm",
+		"/media/Backup/Descargas/Torrent/wall street wolf/The Wolf Of Wall Street 2013 1080p BRRip x264 AC3-JYK/subs/(eng)The Wolf Of Wall Street 2013 1080p BRRip x264 AC3-JYK.srt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/game.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/isr.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/a20.asm",
+		"/home/seba/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/tp2.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/ldr_asm.asm",
+		"/home/seba/Desktop/src/tp2.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/popart_asm.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/temperature_asm.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/tiles_asm.asm",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/cli.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/tiempo_log.sh",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/tests/diferencia.txt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/tests/falla.txt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/tests/nega.txt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/macros.txt",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src/t",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/detalles punto 7",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/imprimir.mac",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/screen.c",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp1/tp1/solucion/listaP.h",
+		"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src/idt.h"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 114.0,
+		"where_history":
+		[
+			"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src",
+			"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src",
+			"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src",
+			"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/solucion/src",
+			"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp2/src",
+			"/home/seba/FCEN/Orga II/repos/seba/orga2/tps/tp3/src"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"weight",
+			"graph",
+			"V",
+			"fr",
+			"p",
+			"b",
+			"vector<int> aux(equipos,0);\n      gr",
+			"ne",
+			"graph",
+			"true",
+			"false",
+			"createGraph",
+			"CreateGraph",
+			"graph",
+			"nodes",
+			"nodos",
+			"this",
+			"this->",
+			"INF",
+			"ady",
+			"cn",
+			"ady",
+			"cn",
+			"incidencias",
+			"1\n",
+			"1",
+			"121",
+			"1E1",
+			"2A1",
+			"61",
+			"11F",
+			"1DF",
+			"29F",
+			"5F",
+			"121",
+			"1E1",
+			"2A1",
+			"61",
+			"11F",
+			"1DF",
+			"0x1DF",
+			"29F",
+			"5F",
+			"11F",
+			"1DF",
+			"29F",
+			"5F",
+			"33",
+			"97",
+			"161",
+			"225",
+			"XMM12",
+			"XMM1",
+			"XMM2",
+			"100",
+			"std::",
+			"100",
+			"[][]",
+			"100",
+			"A",
+			"|",
+			"ADD",
+			"PH",
+			"PHADD",
+			"40",
+			"64",
+			"0",
+			"blue",
+			"i",
+			"unsigned int",
+			"n",
+			"lista_imprimir",
+			"lista_im",
+			"lista_imprimir",
+			"imprimir_seleccion",
+			"crear",
+			"imprimir_seleccion",
+			"uint",
+			"div",
+			"MOV RDI, [RDI",
+			"RBX",
+			"RDX",
+			"RET",
+			"imprimir_jugador",
+			"palabra_y_espacio",
+			"vacia",
+			"imprimi",
+			"vacio",
+			"imprimir",
+			"string_copiar",
+			"lista",
+			"BORRAR",
+			"RAX",
+			"size",
+			"string_size",
+			"charPointer_size",
+			"RAX",
+			"menor_nombre",
+			"xmm",
+			"size_list",
+			"size_nodo",
+			"malloc",
+			"holamundo",
+			"convierte",
+			"altura",
+			"lista_imprimir_f",
+			"palabras",
+			"nodo_borrar",
+			"Datos aleatorios",
+			"tiempos",
+			"Edificios",
+			"buildingNumber",
+			"#3#\nset origin 0.51, 0.0\nset size 0.45, 0.45\nset title \"Grafico 4\"\nset xlabel \"Cantidad de Edificios (x100) (n)\"\nset ylabel \"Cantidad de operaciones\"\nset autoscale\n#set yrange [0:2]\nset key left top\nplot \"../resultados/opsDivNLogN.out\" title \"Datos aleatorios\" with points pt 7 ps 2\n#, 0.85 with points pt 7 ps 1\n",
+			" (ticks / n)",
+			"Tiempo por instancia",
+			"tiempos",
+			"int",
+			"Tablones",
+			"long long int",
+			"4",
+			"3",
+			"5",
+			"long long int",
+			"int",
+			"escalones",
+			"nroTablones",
+			"3",
+			"float"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"string_size",
+			"LISTA_SIZE",
+			"NODO_SIZE",
+			"long long int",
+			"int",
+			"tss_pointer_anterior"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 178.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 118.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
